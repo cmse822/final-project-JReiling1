@@ -11,5 +11,8 @@ First, give a brief description of your project topic idea and detail how you wi
 - Project Description: Computational Neuroscience involves traversing neuronal connections within the brain. Many concepts are reduced to being analyzed with TDA to understand brain dynamics. Graph analysis is a key idea for this area of research
 - Parallellization Strategies: shared memory with (OpenMP) and with GPUs (CUDA) -> CUDA is widly implemented in computational neuroscience and
 want to know more about openMP
-More information to follow after further research done into reading about graph analysis
-.
+- Refer to Mengsen Zhang's paper (https://direct.mit.edu/netn/article/7/2/431/114356/Temporal-Mapper-Transition-networks-in-simulated)
+- Characterizing brain complex dynamics is fundamental in assessing brain functions for healthy individuals and patients with psychiatric disorders
+- Brain modeling with large-scale nonlinear dynamical systems with various levels of biophysical details -> this mechanistic model utilites prior knowledge or assumptions about the biophysical and anatomical features of the brain in addition to timeseries data.
+- Brain states discovered using data-driven methods often share conceptual appeal to nonlinear dynamics
+- Mengsen's work develops direct link between data-driven and mechanistic modeling of brain where time series data is represented as a directed graph, whose nodes and edges could map directly to underlying attractors and phase transitions in nonlinear dynamical model of human brain.
