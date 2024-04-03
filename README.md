@@ -16,3 +16,5 @@ want to know more about openMP
 - Brain modeling with large-scale nonlinear dynamical systems with various levels of biophysical details -> this mechanistic model utilites prior knowledge or assumptions about the biophysical and anatomical features of the brain in addition to timeseries data.
 - Brain states discovered using data-driven methods often share conceptual appeal to nonlinear dynamics
 - Mengsen's work develops direct link between data-driven and mechanistic modeling of brain where time series data is represented as a directed graph, whose nodes and edges could map directly to underlying attractors and phase transitions in nonlinear dynamical model of human brain.
+- Morse decomposition has been used in rigorous analysis of nonlinear dynamical systems to represent a dynamical system as a directed whose nodes map to attractors (and repellers)
+- Look into directed graphs
