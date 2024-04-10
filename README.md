@@ -20,7 +20,7 @@ First, give a brief description of your project topic idea and detail how you wi
   
 
 
-Comments from Sean Couch:
+"Comments from Sean Couch:
 Your proposal on "Graph Analysis with Parallel Computing" for computational neuroscience is ambitious and relevant. Here are some considerations to strengthen your final report:
 
 Clear Project Definition: Explicitly state the thesis or main question your project addresses. Clarify how graph analysis and TDA (Topological Data Analysis) contribute to understanding brain dynamics.
@@ -29,6 +29,6 @@ Parallelization Strategies: You mentioned using OpenMP and CUDA. Detail how each
 
 Verification and Validation: Develop a clear plan for verifying the correctness of your parallel algorithms. This could involve comparing results with a serial implementation or existing benchmarks in computational neuroscience.
 
-Load Balancing and Memory Usage: Discuss how you plan to address load balancing between CPU and GPU computations, and analyze how memory usage will scale with the size of the graph data being processed.
+Load Balancing and Memory Usage: Discuss how you plan to address load balancing between CPU and GPU computations, and analyze how memory usage will scale with the size of the graph data being processed."
 
 Scaling Studies: Elaborate on your approach to scaling studies, including both strong and weak scaling, and how they relate to the complexities of brain modeling. Include plans for thread-to-thread speedup analysis.
