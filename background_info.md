@@ -9,3 +9,8 @@
 - Load Balancing and Memory Usage: Since I am using openMP and MPI, I will only be using CPUs. Additionally, I will need to scale how my memory usage will adapt while begin processed.
 
 - Scaling Studies: this aspect need to be thought out more, please look into this issue.
+
+
+[Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+
+  Finds the shortest paths between nodes in a weighted graph. For a given source node in the graph, the algorithm finds the shortest path between the node and every other. Uses labels that are positive integers or real numbers, which are totally ordered.
