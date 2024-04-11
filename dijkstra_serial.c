@@ -8,7 +8,7 @@
 // This version is serial. See other verions of Dijkstra for parallelized
 // verions in both MPI and openMP
 
-#define num_verticies = 9
+#define num_verticies 9
 
 
 int minDistance(int dist[], bool sptSet[])
@@ -16,13 +16,20 @@ int minDistance(int dist[], bool sptSet[])
     // Initialize min value
     int min = INT_MAX, min_index;
  
-    for (int v = 0; v < V; v++)
-        if (sptSet[v] == false && dist[v] <= min)
-            min = dist[v], min_index = v;
+    for (int vertex = 0; vertex < num_verticies; vertex++)
+        if (sptSet[vertex] == false && dist[vertex] <= min)
+            min = dist[vertex], min_index = vertex;
  
     return min_index;
 }
 
+
+void printSolution(int dist[])
+{
+    printf("Vertex \t\t Distance from Source\n");
+    for (int i = 0; i < num_verticies; i++)
+        printf("%d \t\t\t\t %d\n", i, dist[i]);
+}
 
 int main() {
    /* Example graph found online */
@@ -37,21 +44,26 @@ int main() {
                         { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
 
     int shortest_dist[num_verticies]; // Holds an arry of shortest distances from the source verticie
-    int short_path_tree[num_verticies]; 
+    bool short_path_tree[num_verticies]; 
     // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
+
+   int source = 0;
 
     shortest_dist[source] = 0;
   
     // Step one in algorithm set all non-origin verticies to infinity
-    for (in i = 0: i < num_verticies; i++) {
-      shortest_dist[i] = INT_MAX;
+    for (int i = 0; i < num_verticies; i++) {
+      if (i != source) {
+        shortest_dist[i] = INT_MAX;
+      }
+
       short_path_tree[i] = false;
     }
 
    // Finding the shortest path for all verticies
    // Pick the vertex with min distance from rest of verticies that are not seen
    // Mark the index as seen
-   for (int vert_indx = 0; vert_index < num_verticies - 1; vert_indx++) {
+   for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
       int current_vert = minDistance(shortest_dist, short_path_tree);
 
       short_path_tree[current_vert] = true;
@@ -68,10 +80,9 @@ int main() {
 
    }
 
-   print(shortest_dist)
+   printSolution(shortest_dist);
+
+
+   return 0;
   
-
-
-
-
 }
