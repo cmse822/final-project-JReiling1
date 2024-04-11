@@ -11,7 +11,17 @@
 #define num_verticies = 9
 
 
-
+int minDistance(int dist[], bool sptSet[])
+{
+    // Initialize min value
+    int min = INT_MAX, min_index;
+ 
+    for (int v = 0; v < V; v++)
+        if (sptSet[v] == false && dist[v] <= min)
+            min = dist[v], min_index = v;
+ 
+    return min_index;
+}
 
 
 int main() {
@@ -37,7 +47,28 @@ int main() {
       shortest_dist[i] = INT_MAX;
       short_path_tree[i] = false;
     }
-  
+
+   // Finding the shortest path for all verticies
+   // Pick the vertex with min distance from rest of verticies that are not seen
+   // Mark the index as seen
+   for (int vert_indx = 0; vert_index < num_verticies - 1; vert_indx++) {
+      int current_vert = minDistance(shortest_distance, short_path_tree);
+
+      short_path_tree[current_vert] = true;
+
+      // Calculate the distance between adjacent verticies of the choosen vertex
+
+      for (int vertex = 0; vertex < num_verticies; vertex++)
+
+         if (!short_path_tree[vertex] && graph[current_vert][vertex] && shortest_dist[current_vert] != INT_MAX 
+            && shortest_dist[current_vert] + graph[current_vert][vertex] < shortest_dist[vertex])
+
+            shortest_dist[vertex] = shortest_dist[current_vert] + graph[current_vert][vertex];
+    
+
+   }
+
+   print(shortest_dist)
   
 
 
