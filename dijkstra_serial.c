@@ -52,18 +52,18 @@ int main() {
    // Pick the vertex with min distance from rest of verticies that are not seen
    // Mark the index as seen
    for (int vert_indx = 0; vert_index < num_verticies - 1; vert_indx++) {
-      int current_vert = minDistance(shortest_distance, short_path_tree);
+      int current_vert = minDistance(shortest_dist, short_path_tree);
 
       short_path_tree[current_vert] = true;
 
       // Calculate the distance between adjacent verticies of the choosen vertex
 
-      for (int vertex = 0; vertex < num_verticies; vertex++)
+      for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++)
 
-         if (!short_path_tree[vertex] && graph[current_vert][vertex] && shortest_dist[current_vert] != INT_MAX 
-            && shortest_dist[current_vert] + graph[current_vert][vertex] < shortest_dist[vertex])
+         if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
+            && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex])
 
-            shortest_dist[vertex] = shortest_dist[current_vert] + graph[current_vert][vertex];
+            shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
     
 
    }
