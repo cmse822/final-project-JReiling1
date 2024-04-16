@@ -48,16 +48,16 @@ int main() {
     bool short_path_tree[num_verticies]; 
     // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
 
-   
+   // Store every node in a source_list
    int source_list[num_verticies];
-   for (int i = 0; i < num_verticies; i++) {
-      source_list[i] = i;
+   for (int vertex = 0; vertex < num_verticies; vertex++) {
+      source_list[vertex] = vertex;
    }
 
-  for (int i = 0; i < num_verticies; i++){
+  for (int source_index = 0; source_index < num_verticies; source_index++){
     double start_time;
     get_walltime(&start_time);
-    int source = source_list[i];
+    int source = source_list[source_index];
 
     shortest_dist[source] = 0;
   

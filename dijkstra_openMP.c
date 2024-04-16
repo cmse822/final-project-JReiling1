@@ -72,67 +72,72 @@ int main() {
     bool short_path_tree[num_verticies]; 
     // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
 
-   int source = 0;
+   // Store every node in a source_list
+   int source_list[num_verticies];
+   for (int vertex = 0; vertex < num_verticies; vertex++) {
+      source_list[vertex] = vertex;
+   }
 
-    shortest_dist[source] = 0;
+    #pragma omp parallel 
+    {
+        for (int source_index = 0; source_index < num_verticies; source_index++){
+            double start_time = omp_get_wtime();
+            int source = source_list[source_index];
 
-    // Initialize OMP
-    int actual_n_threads;
-  
-    // Step one in algorithm set all non-origin verticies to infinity
-    for (int i = 0; i < num_verticies; i++) {
-      if (i != source) {
-        shortest_dist[i] = INT_MAX;
-      }
+            shortest_dist[source] = 0;
 
-      short_path_tree[i] = false;
-    }
+            // Initialize OMP
+            int actual_n_threads;
 
-   // Finding the shortest path for all verticies
-   // Pick the vertex with min distance from rest of verticies that are not seen
-   // Mark the index as seen
-
-
-    for (int thread_num = 1; thread_num < NUM_THREADS + 1; thread_num*=2) {
-        omp_set_num_threads(thread_num);
-        double start_time = omp_get_wtime();
-
-        #pragma omp parallel
-        {
-
-            int threadnum = omp_get_thread_num();
-            int numthreads = omp_get_num_threads();
-
-            actual_n_threads = numthreads;
-
-            #pragma omp for collapse(1)
-            for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
-            int current_vert = minDistance(shortest_dist, short_path_tree);
-
-            short_path_tree[current_vert] = true;
-
-            // Calculate the distance between adjacent verticies of the choosen vertex
-
-            for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++)
-
-                if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
-                    && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex])
-
-                    shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
-            
-
+            // Step one in algorithm set all non-origin verticies to infinity
+            for (int i = 0; i < num_verticies; i++) {
+            if (i != source) {
+                shortest_dist[i] = INT_MAX;
             }
-        }
 
+            short_path_tree[i] = false;
+            }
+
+            // Finding the shortest path for all verticies
+            // Pick the vertex with min distance from rest of verticies that are not seen
+            // Mark the index as seen
+
+            #pragma omp for collapse(2)
+            for (int thread_num = 1; thread_num < NUM_THREADS + 1; thread_num*=2) {
+                omp_set_num_threads(thread_num);
+
+                int threadnum = omp_get_thread_num();
+                int numthreads = omp_get_num_threads();
+
+                actual_n_threads = numthreads;
+
+                
+                for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
+                    int current_vert = minDistance(shortest_dist, short_path_tree);
+
+                    short_path_tree[current_vert] = true;
+
+                    // Calculate the distance between adjacent verticies of the choosen vertex
+
+                    for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++) {
+
+                        if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
+                            && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex]) {
+                                shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
+                            }
+                    }
+                }
+
+            }   
+
+        printf("Shortest Path for source node = %d \n", source);
+        printSolution(shortest_dist);
         // Calculate the runtime
         double end_time = omp_get_wtime();
         double run_time = end_time - start_time;
         printf("Runtime information (num threads and runtime) %d %f\n", actual_n_threads, run_time);
+    
+        }
     }
-    printSolution(shortest_dist);
-
-
-
-   return 0;
-  
+    return 0;
 }
