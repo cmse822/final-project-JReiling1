@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "get_walltime.c"
 
 // CMSE 822: Parallel Computing
 // Final Project
@@ -47,7 +48,16 @@ int main() {
     bool short_path_tree[num_verticies]; 
     // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
 
-   int source = 0;
+   
+   int source_list[num_verticies];
+   for (int i = 0; i < num_verticies; i++) {
+      source_list[i] = i;
+   }
+
+  for (int i = 0; i < num_verticies; i++){
+    double start_time;
+    get_walltime(&start_time);
+    int source = source_list[i];
 
     shortest_dist[source] = 0;
   
@@ -80,7 +90,14 @@ int main() {
 
    }
 
+   double end_time;
+   get_walltime(&end_time);
+   printf("Shortest Path for source node = %d \n", source);
    printSolution(shortest_dist);
+   printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
+
+
+  }
 
 
    return 0;
