@@ -11,7 +11,7 @@
 // verions in both MPI and openMP
 
 #define num_verticies 9
-#define NUM_THREADS 16
+#define NUM_THREADS 9
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -29,9 +29,10 @@ int minDistance(int shortest_dist[], bool short_path_tree[])
 
         #pragma omp for
         for (int vertex = 0; vertex < num_verticies; vertex++) {
-            if (short_path_tree[vertex] == false && shortest_dist[vertex] <= local_min)
+            if (short_path_tree[vertex] == false && shortest_dist[vertex] <= local_min) {
                 local_min = shortest_dist[vertex];
                 local_min_index = vertex;
+            }
         }
         
         // Notice we need critical to sync local and global min
@@ -102,14 +103,14 @@ int main() {
             // Pick the vertex with min distance from rest of verticies that are not seen
             // Mark the index as seen
 
-            #pragma omp for collapse(2)
-            for (int thread_num = 1; thread_num < NUM_THREADS + 1; thread_num*=2) {
-                omp_set_num_threads(thread_num);
+            // #pragma omp for collapse(2)
+            // for (int thread_num = 1; thread_num < NUM_THREADS + 1; thread_num*=2) {
+            //     omp_set_num_threads(thread_num);
 
-                int threadnum = omp_get_thread_num();
-                int numthreads = omp_get_num_threads();
+            //     int threadnum = omp_get_thread_num();
+            //     int numthreads = omp_get_num_threads();
 
-                actual_n_threads = numthreads;
+            //     actual_n_threads = numthreads;
 
                 
                 for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
@@ -126,7 +127,7 @@ int main() {
                                 shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
                             }
                     }
-                }
+                //}
 
             }   
 
