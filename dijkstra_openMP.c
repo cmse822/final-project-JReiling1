@@ -31,11 +31,18 @@ int minDistance(int shortest_dist[], bool short_path_tree[]) {
 }
 
 
-void printSolution(int dist[])
+void printSolution(int dist[], int source, double duration)
 {
-    printf("Vertex \t\t Distance from Source\n");
-    for (int i = 0; i < num_verticies; i++)
-        printf("%d \t\t\t\t %d\n", i, dist[i]);
+    #pragma omp critical
+    {
+        printf("Thread %d: Shortest Path for source node = %d.\n", omp_get_thread_num(), source);
+        printf("Time for computation = %f\n", duration);
+        printf("Vertex \t \t Distance from Source\n");
+        for (int i = 0; i < num_verticies; i++){ 
+            printf("%d \t\t\t\t %d\n", i, dist[i]);
+        }
+            
+    }
 }
 
 int main() {
@@ -109,9 +116,7 @@ int main() {
         double run_time = end_time - start_time;
 
         // Print resulting infromation
-        printf("Thread %d: Shortest Path for source node = %d \n", omp_get_thread_num(), source);
-        printSolution(shortest_dist);
-        printf("Thread %d: Time for shortest path distance: %f seconds\n\n", omp_get_thread_num(), run_time);
+        printSolution(shortest_dist, source, run_time);
     
         }
     }
