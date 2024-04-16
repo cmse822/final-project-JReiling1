@@ -16,9 +16,10 @@
 
 // Notice that we're instantiating omp to avoid race conditions
 int minDistance(int shortest_dist[], bool short_path_tree[]) {
-    int min = INT_MAX, min_index;
+    int min = INT_MAX, min_index = -1;
 
-    #pragma omp parallel for shared(shortest_dist, short_path_tree) reduction(min:min) 
+    //#pragma omp parallel for shared(shortest_dist, short_path_tree) reduction(min:min) 
+    #pragma omp parallel for
     for (int i = 0; i < num_verticies; i++) {
         if (!short_path_tree[i] && shortest_dist[i] <= min) {
             min = shortest_dist[i];
@@ -62,10 +63,11 @@ int main() {
    }
 
     omp_set_nested(0); // Disable nested parallelism
-
+    omp_set_num_threads(NUM_THREADS);
 
     #pragma omp parallel
     {
+        //#pragma omp parallel for
         for (int source_index = 0; source_index < num_verticies; source_index++){
             // Initialize source and get start time
             int source = source_list[source_index];
@@ -74,7 +76,8 @@ int main() {
 
 
             // Step one in algorithm set all non-origin verticies to infinity
-            #pragma omp parallel for shared(shortest_dist, short_path_tree)
+            //#pragma omp parallel for shared(shortest_dist, short_path_tree)
+            //#pragma omp parallel for
             for (int i = 0; i < num_verticies; i++) {
                 if (i != source) {
                     shortest_dist[i] = INT_MAX;
@@ -90,7 +93,8 @@ int main() {
                 short_path_tree[current_vert] = true;
 
                 // Calculate the distance between adjacent verticies of the choosen vertex
-                #pragma omp parallel for shared(shortest_dist, short_path_tree)
+                //#pragma omp parallel for shared(shortest_dist, short_path_tree)
+                #pragma omp parallel for
                 for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++) {
 
                     if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 

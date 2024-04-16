@@ -4,7 +4,7 @@
 #SBATCH --time=2:00:00       # limit of wall clock time - how long the job will run (same as -t)
 #SBATCH --nodes=1                     # the number of node requested.
 #SBATCH --ntasks=2                    # the number of task to run
-#SBATCH --cpus-per-task=0      # the number of CPUs (or cores) per task (same as -c)
+####SBATCH --cpus-per-task=0      # the number of CPUs (or cores) per task (same as -c)
 #SBATCH --gpus=v100:1
 #SBATCH --mem=32G                  # total memory per node
 #SBATCH --job-name reiling_dijkstra_openmp     # you can give your job a name for easier identification (same as -J)
@@ -18,6 +18,6 @@ scontrol show job $SLURM_JOB_ID     ### write job information to output file
 
 gcc dijkstra_openMP -o dijkstra_openMP.c -fopenmp
 
-dijkstra_openMP
+./dijkstra_openMP
 
 
