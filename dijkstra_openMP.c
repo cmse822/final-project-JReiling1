@@ -78,7 +78,7 @@ int main() {
       source_list[vertex] = vertex;
    }
 
-    #pragma omp parallel 
+    #pragma omp parallel num_threads(num_verticies)
     {
         for (int source_index = 0; source_index < num_verticies; source_index++){
             double start_time = omp_get_wtime();
