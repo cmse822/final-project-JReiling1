@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "get_walltime.c"
 
 // CMSE 822: Parallel Computing
@@ -9,7 +10,7 @@
 // This version is serial. See other verions of Dijkstra for parallelized
 // verions in both MPI and openMP
 
-#define num_verticies 9
+#define num_verticies 100
 
 
 int minDistance(int dist[], bool sptSet[])
@@ -32,18 +33,49 @@ void printSolution(int dist[])
         printf("%d \t\t\t\t %d\n", i, dist[i]);
 }
 
+
+int** generateGraph() {
+    int** graph = (int**)malloc(num_verticies * sizeof(int*));
+    if (graph == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    
+    for (int i = 0; i < num_verticies; i++) {
+        graph[i] = (int*)malloc(num_verticies * sizeof(int));
+        if (graph[i] == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(1);
+        }
+    }
+
+    // Generating random weights for the edges
+    for (int i = 0; i < num_verticies; i++) {
+        for (int j = 0; j < num_verticies; j++) {
+            if (i == j) {
+                graph[i][j] = 0;  // Diagonal elements set to 0
+            } else {
+                graph[i][j] = rand() % 20;  // Random weight between 0 and 19
+            }
+        }
+    }
+
+    return graph;
+}
+
+
 int main() {
    /* Example graph found online */
-    int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
-                        { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-                        { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
-                        { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
-                        { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-                        { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
-                        { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
-                        { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-                        { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
-
+    // int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+    //                     { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+    //                     { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
+    //                     { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
+    //                     { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+    //                     { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
+    //                     { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
+    //                     { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+    //                     { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
+    int** graph = generateGraph();
    // Initialize csv 
     const char *csv_file_name="dijkstra_serial.csv";
 

@@ -33,6 +33,8 @@ void printSolution(int dist[])
         printf("%d \t\t\t\t %d\n", i, dist[i]);
 }
 
+
+
 int main(int argc, char *argv[]) 
 {
     // Initialize MPI information
@@ -49,8 +51,8 @@ int main(int argc, char *argv[])
       }
 
     // Divide the vertices equally among the processes
-    int start_vertex = rank * num_vertices / size;
-    int end_vertex = (rank + 1) * num_vertices / size;
+    int start_vertex = rank * num_verticies / size;
+    int end_vertex = (rank + 1) * num_verticies / size;
 
     /* Example graph found online */
     int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
@@ -137,18 +139,14 @@ int main(int argc, char *argv[])
 
         }
 
-      // if (rank == 0) {
-      //   printf("Shortest Path for source node = %d on process %d\n", source, rank);
-      //   printSolution(shortest_dist);
-      //   double end_time;
-      //   get_walltime(&end_time);
-      //   fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
+      if (rank == 0) {
+        printf("Shortest Path for source node = %d on process %d\n", source, rank);
+        printSolution(shortest_dist);
+        double end_time;
+        get_walltime(&end_time);
+        fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
         
-      // }
-      printf("Shortest Path for source node = %d on process %d\n", source, rank);
-      printSolution(shortest_dist);
-      double end_time = MPI_Wtime();
-      fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
+      }
     }
 
     if (rank == 0) {
