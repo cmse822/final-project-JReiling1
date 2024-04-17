@@ -53,6 +53,27 @@ int main(int argc, char *argv[]) {
                     { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
                     { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
 
+  // Initialize csv 
+  const char *csv_file_name="dijkstra_MPI.csv";
+
+  FILE *outputFile = fopen(csv_file_name, "a");
+
+  // Check if the file is open
+  if (outputFile == NULL) {
+      // Failed to open the file
+      fprintf(stderr, "Error: Failed to open file for appending.\n");
+      return 1;
+  }
+
+  // Write headers if the file is newly created
+  fseek(outputFile, 0, SEEK_END); // Move to the end of the file
+  long fileSize = ftell(outputFile); // Get the current position (file size)
+  if (fileSize == 0) { // Check if the file is empty
+      fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+  }
+
+
+
   int shortest_dist[num_verticies]; // Holds an arry of shortest distances from the source verticie
   bool short_path_tree[num_verticies]; 
   // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
@@ -62,10 +83,14 @@ int main(int argc, char *argv[]) {
   for (int vertex = 0; vertex < num_verticies; vertex++) {
     source_list[vertex] = vertex;
   }
-  double start_time;
-  get_walltime(&start_time);
+
+  double total_start_time;
+  get_walltime(&total_start_time);
   for (int source_index = 0; source_index < num_verticies; source_index++){
     int source = source_list[source_index];
+
+    double start_time;
+    get_walltime(&start_time);
 
     shortest_dist[source] = 0;
   
@@ -101,14 +126,17 @@ int main(int argc, char *argv[]) {
     if (rank == 0) {
       printf("Shortest Path for source node = %d on process %d\n", source, rank);
       printSolution(shortest_dist);
+      double end_time;
+      get_walltime(&end_time);
+      fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
       
     }
   }
 
   if (rank == 0) {
-    double end_time;
-    get_walltime(&end_time);
-    printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
+    double total_end_time;
+    get_walltime(&total_end_time);
+    printf("Time for shortest path distance: %f seconds\n\n", total_end_time - total_start_time);
   }
 
   MPI_Finalize();
