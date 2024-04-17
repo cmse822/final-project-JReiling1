@@ -44,6 +44,26 @@ int main() {
                         { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
                         { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
 
+   // Initialize csv 
+    const char *csv_file_name="dijkstra_serial.csv";
+
+    FILE *outputFile = fopen(csv_file_name, "a");
+
+    // Check if the file is open
+    if (outputFile == NULL) {
+        // Failed to open the file
+        fprintf(stderr, "Error: Failed to open file for appending.\n");
+        return 1;
+    }
+
+    // Write headers if the file is newly created
+    fseek(outputFile, 0, SEEK_END); // Move to the end of the file
+    long fileSize = ftell(outputFile); // Get the current position (file size)
+    if (fileSize == 0) { // Check if the file is empty
+        fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+    }
+
+
     int shortest_dist[num_verticies]; // Holds an arry of shortest distances from the source verticie
     bool short_path_tree[num_verticies]; 
     // Holds an array bool values. True if vertex is in shortest_path_tree. False if not
@@ -95,11 +115,11 @@ int main() {
    printf("Shortest Path for source node = %d \n", source);
    printSolution(shortest_dist);
    printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
-
+   fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
 
   }
 
-
+   fclose(outputFile);
    return 0;
   
 }

@@ -31,16 +31,17 @@ int minDistance(int shortest_dist[], bool short_path_tree[]) {
 }
 
 
-void printSolution(int dist[], int source, double duration)
+void printSolution(FILE *outputFile, int dist[], int source, double runtime)
 {
     #pragma omp critical
     {
         printf("Thread %d: Shortest Path for source node = %d.\n", omp_get_thread_num(), source);
-        printf("Time for computation = %f\n", duration);
+        printf("Time for computation = %f\n", runtime);
         printf("Vertex \t \t Distance from Source\n");
         for (int i = 0; i < num_verticies; i++){ 
             printf("%d \t\t\t\t %d\n", i, dist[i]);
         }
+        fprintf(outputFile, "%d, %d, %f\n", source, omp_get_thread_num(), runtime);
             
     }
 }
@@ -58,6 +59,26 @@ int main() {
         { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
         { 0, 0, 2, 0, 0, 0, 6, 7, 0 } 
     };
+
+    // Initialize csv 
+    const char *csv_file_name="dijkstra_openMP.csv";
+
+    FILE *outputFile = fopen(csv_file_name, "a");
+
+    // Check if the file is open
+    if (outputFile == NULL) {
+        // Failed to open the file
+        fprintf(stderr, "Error: Failed to open file for appending.\n");
+        return 1;
+    }
+
+    // Write headers if the file is newly created
+    fseek(outputFile, 0, SEEK_END); // Move to the end of the file
+    long fileSize = ftell(outputFile); // Get the current position (file size)
+    if (fileSize == 0) { // Check if the file is empty
+        fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+    }
+
 
     int shortest_dist[num_verticies]; // Holds an arry of shortest distances from the source verticie
     bool short_path_tree[num_verticies]; 
@@ -116,9 +137,10 @@ int main() {
         double run_time = end_time - start_time;
 
         // Print resulting infromation
-        printSolution(shortest_dist, source, run_time);
+        printSolution(outputFile, shortest_dist, source, run_time);
     
         }
     }
+    fclose(outputFile);
     return 0;
 }
