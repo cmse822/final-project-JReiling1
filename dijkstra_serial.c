@@ -10,7 +10,7 @@
 // This version is serial. See other verions of Dijkstra for parallelized
 // verions in both MPI and openMP
 
-#define num_verticies 10000
+#define num_verticies 9
 
 
 int minDistance(int dist[], bool sptSet[])
@@ -55,6 +55,8 @@ int** generateGraph() {
             if (i == j) {
                 graph[i][j] = 0;  // Diagonal elements set to 0
             } else {
+                int seed = 123;
+                srand(123);
                 graph[i][j] = rand() % 100;  // Random weight between 0 and 19
             }
         }
@@ -66,16 +68,16 @@ int** generateGraph() {
 
 int main() {
    /* Example graph found online */
-    // int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
-    //                     { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-    //                     { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
-    //                     { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
-    //                     { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-    //                     { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
-    //                     { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
-    //                     { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-    //                     { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
-    int** graph = generateGraph();
+    int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+                        { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+                        { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
+                        { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
+                        { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+                        { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
+                        { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
+                        { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+                        { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
+    //int** graph = generateGraph();
    // Initialize csv 
     const char *csv_file_name="dijkstra_serial.csv";
 
@@ -147,9 +149,9 @@ int main() {
 
     double end_time;
     get_walltime(&end_time);
-    //printf("Shortest Path for source node = %d \n", source);
-    //printSolution(shortest_dist);
-    //printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
+    printf("Shortest Path for source node = %d \n", source);
+    printSolution(shortest_dist);
+    printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
   }
     double total_end_time;
     get_walltime(&total_end_time);

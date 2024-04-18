@@ -39,3 +39,4 @@ dijkstra_serial.c:131:5: error: ‘for’ loop initial declarations are only all
 dijkstra_serial.c:138:9: error: ‘for’ loop initial declarations are only allowed in C99 mode
          for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++)
          ^
+slurmstepd: error: *** JOB 34202035 ON nvl-000 CANCELLED AT 2024-04-18T11:39:03 DUE TO TIME LIMIT ***

@@ -14,3 +14,6 @@
 [Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 
   Finds the shortest paths between nodes in a weighted graph. For a given source node in the graph, the algorithm finds the shortest path between the node and every other. Uses labels that are positive integers or real numbers, which are totally ordered.
+
+[Dijkstra's Algorithm Validation](https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/)
+

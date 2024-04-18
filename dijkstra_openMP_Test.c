@@ -11,7 +11,7 @@
 // verions in both MPI and openMP
 
 #define num_verticies 9
-#define NUM_THREADS 9
+#define NUM_THREADS 1
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -19,7 +19,7 @@ int minDistance(int shortest_dist[], bool short_path_tree[]) {
     int min = INT_MAX, min_index = -1;
 
     //#pragma omp parallel for shared(shortest_dist, short_path_tree) reduction(min:min) 
-    #pragma omp parallel for 
+    //#pragma omp parallel for reduction(min: min) 
     for (int i = 0; i < num_verticies; i++) {
         if (!short_path_tree[i] && shortest_dist[i] <= min) {
             min = shortest_dist[i];
@@ -93,41 +93,40 @@ int main() {
     omp_set_nested(0); // Disable nested parallelism
     omp_set_num_threads(NUM_THREADS);
     double start_time = omp_get_wtime();
-    #pragma omp parallel
-{
-    #pragma omp for
-    for (int source_index = 0; source_index < num_verticies; source_index++) {
-        // Initialize source and get start time
-        int source = source_list[source_index];
-        shortest_dist[source] = 0;
+    #pragma omp parallel private(short_path_tree,shortest_dist)
+    {
+        #pragma omp for
+        for (int source_index = 0; source_index < num_verticies; source_index++) {
+            // Initialize source and get start time
+            int source = source_list[source_index];
+            shortest_dist[source] = 0;
 
-        // Step one in algorithm set all non-origin vertices to infinity
-        for (int i = 0; i < num_verticies; i++) {
-            if (i != source) {
-                shortest_dist[i] = INT_MAX;
+            // Step one in algorithm set all non-origin vertices to infinity
+            for (int i = 0; i < num_verticies; i++) {
+                if (i != source) {
+                    shortest_dist[i] = INT_MAX;
+                }
+                short_path_tree[i] = false;
             }
-            short_path_tree[i] = false;
+
+            #pragma omp critical
+            for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
+                int current_vert = minDistance(shortest_dist, short_path_tree);
+                short_path_tree[current_vert] = true;
+
+                // Calculate the distance between adjacent vertices of the chosen vertex
+                for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++) {
+                    if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
+                        && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex]) {
+                            shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
+                        }
+                }
+            }   
+
+            // Print resulting information
+            printSolution(outputFile, shortest_dist, source);
         }
-
-        #pragma omp critical
-        for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
-            int current_vert = minDistance(shortest_dist, short_path_tree);
-            short_path_tree[current_vert] = true;
-
-            // Calculate the distance between adjacent vertices of the chosen vertex
-            #pragma omp shared(short_path_tree,shortest_dist)
-            for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++) {
-                if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
-                    && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex]) {
-                        shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
-                    }
-            }
-        }   
-
-        // Print resulting information
-        printSolution(outputFile, shortest_dist, source);
     }
-}
         double end_time = omp_get_wtime();
         double run_time = end_time - start_time;
 
