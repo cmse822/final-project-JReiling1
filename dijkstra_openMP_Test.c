@@ -11,7 +11,7 @@
 // verions in both MPI and openMP
 
 #define num_verticies 9
-#define NUM_THREADS 1
+//#define NUM_THREADS 2
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -91,8 +91,9 @@ int main() {
    }
 
     omp_set_nested(0); // Disable nested parallelism
-    omp_set_num_threads(NUM_THREADS);
+    //omp_set_num_threads(NUM_THREADS);
     double start_time = omp_get_wtime();
+    //
     #pragma omp parallel private(short_path_tree,shortest_dist)
     {
         #pragma omp for
