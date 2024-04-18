@@ -31,7 +31,7 @@ int minDistance(int shortest_dist[], bool short_path_tree[]) {
 }
 
 
-void printSolution(FILE *outputFile, int dist[], int source, double runtime)
+void printSolution(FILE *outputFile, int dist[], int num_verticies, int source, double runtime)
 {
     #pragma omp critical
     {
@@ -41,7 +41,7 @@ void printSolution(FILE *outputFile, int dist[], int source, double runtime)
         for (int i = 0; i < num_verticies; i++){ 
             printf("%d \t\t\t\t %d\n", i, dist[i]);
         }
-        fprintf(outputFile, "%d, %d, %f\n", source, omp_get_thread_num(), runtime);
+        fprintf(outputFile, "%d, %d, %f\n", num_verticies, source,  runtime);
             
     }
 }
@@ -76,7 +76,7 @@ int main() {
     fseek(outputFile, 0, SEEK_END); // Move to the end of the file
     long fileSize = ftell(outputFile); // Get the current position (file size)
     if (fileSize == 0) { // Check if the file is empty
-        fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+        fprintf(outputFile, "Num Verticies, Source Node, Runtime\n");
     }
 
 
@@ -137,7 +137,7 @@ int main() {
         double run_time = end_time - start_time;
 
         // Print resulting infromation
-        printSolution(outputFile, shortest_dist, source, run_time);
+        printSolution(outputFile, shortest_dist, num_verticies, source, run_time);
     
         }
     }

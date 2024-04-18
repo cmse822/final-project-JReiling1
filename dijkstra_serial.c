@@ -10,7 +10,7 @@
 // This version is serial. See other verions of Dijkstra for parallelized
 // verions in both MPI and openMP
 
-#define num_verticies 100
+#define num_verticies 10000
 
 
 int minDistance(int dist[], bool sptSet[])
@@ -55,7 +55,7 @@ int** generateGraph() {
             if (i == j) {
                 graph[i][j] = 0;  // Diagonal elements set to 0
             } else {
-                graph[i][j] = rand() % 20;  // Random weight between 0 and 19
+                graph[i][j] = rand() % 100;  // Random weight between 0 and 19
             }
         }
     }
@@ -92,7 +92,7 @@ int main() {
     fseek(outputFile, 0, SEEK_END); // Move to the end of the file
     long fileSize = ftell(outputFile); // Get the current position (file size)
     if (fileSize == 0) { // Check if the file is empty
-        fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+        fprintf(outputFile, "Num Verticies, Runtime\n");
     }
 
 
@@ -105,53 +105,56 @@ int main() {
    for (int vertex = 0; vertex < num_verticies; vertex++) {
       source_list[vertex] = vertex;
    }
+    
+    double total_start_time;
+    get_walltime(&total_start_time);
 
-  for (int source_index = 0; source_index < num_verticies; source_index++){
-    double start_time;
-    get_walltime(&start_time);
-    int source = source_list[source_index];
+    for (int source_index = 0; source_index < num_verticies; source_index++){
+        double start_time;
+        get_walltime(&start_time);
+        int source = source_list[source_index];
 
-    shortest_dist[source] = 0;
-  
-    // Step one in algorithm set all non-origin verticies to infinity
-    for (int i = 0; i < num_verticies; i++) {
-      if (i != source) {
-        shortest_dist[i] = INT_MAX;
-      }
+        shortest_dist[source] = 0;
+    
+        // Step one in algorithm set all non-origin verticies to infinity
+        for (int i = 0; i < num_verticies; i++) {
+        if (i != source) {
+            shortest_dist[i] = INT_MAX;
+        }
 
-      short_path_tree[i] = false;
+        short_path_tree[i] = false;
+        }
+
+    // Finding the shortest path for all verticies
+    // Pick the vertex with min distance from rest of verticies that are not seen
+    // Mark the index as seen
+    for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
+        int current_vert = minDistance(shortest_dist, short_path_tree);
+
+        short_path_tree[current_vert] = true;
+
+        // Calculate the distance between adjacent verticies of the choosen vertex
+
+        for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++)
+
+            if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
+                && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex])
+
+                shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
+        
+
     }
 
-   // Finding the shortest path for all verticies
-   // Pick the vertex with min distance from rest of verticies that are not seen
-   // Mark the index as seen
-   for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
-      int current_vert = minDistance(shortest_dist, short_path_tree);
-
-      short_path_tree[current_vert] = true;
-
-      // Calculate the distance between adjacent verticies of the choosen vertex
-
-      for (int adj_vertex = 0; adj_vertex < num_verticies; adj_vertex++)
-
-         if (!short_path_tree[adj_vertex] && graph[current_vert][adj_vertex] && shortest_dist[current_vert] != INT_MAX 
-            && shortest_dist[current_vert] + graph[current_vert][adj_vertex] < shortest_dist[adj_vertex])
-
-            shortest_dist[adj_vertex] = shortest_dist[current_vert] + graph[current_vert][adj_vertex];
-    
-
-   }
-
-   double end_time;
-   get_walltime(&end_time);
-   printf("Shortest Path for source node = %d \n", source);
-   printSolution(shortest_dist);
-   printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
-   fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
-
+    double end_time;
+    get_walltime(&end_time);
+    //printf("Shortest Path for source node = %d \n", source);
+    //printSolution(shortest_dist);
+    //printf("Time for shortest path distance: %f seconds\n\n", end_time - start_time);
   }
-
-   fclose(outputFile);
-   return 0;
+    double total_end_time;
+    get_walltime(&total_end_time);
+    fprintf(outputFile, "%d, %f\n", num_verticies,  total_end_time - total_start_time);
+    fclose(outputFile);
+    return 0;
   
 }
