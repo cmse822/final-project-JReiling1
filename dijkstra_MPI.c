@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     // Write the header if it hasn't been written yet
     if (!header_written) {
         if (rank == 0) {
-            fprintf(outputFile, "Num Verticies, Runtime\n");
+            fprintf(outputFile, "Num Verticies, Num Ranks, Runtime\n");
         }
     }
 
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
     if (rank == 0) {
       double total_end_time = MPI_Wtime();
       printf("Time for shortest path distance: %f seconds\n\n", total_end_time - total_start_time);
-      fprintf(outputFile, "%d, %f\n", num_verticies,  total_end_time - total_start_time);
+      fprintf(outputFile, "%d, %d, %f\n", num_verticies, size, total_end_time - total_start_time);
     }
 
     MPI_Finalize();

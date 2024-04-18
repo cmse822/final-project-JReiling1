@@ -11,7 +11,7 @@
 // verions in both MPI and openMP
 
 #define num_verticies 9
-//#define NUM_THREADS 2
+#define NUM_THREADS 2
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -94,7 +94,7 @@ int main() {
     //omp_set_num_threads(NUM_THREADS);
     double start_time = omp_get_wtime();
     //
-    #pragma omp parallel private(short_path_tree,shortest_dist)
+    #pragma omp parallel private(shortest_dist, short_path_tree)
     {
         #pragma omp for
         for (int source_index = 0; source_index < num_verticies; source_index++) {
