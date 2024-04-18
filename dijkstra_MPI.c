@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
         printSolution(shortest_dist);
         double end_time;
         get_walltime(&end_time);
-        fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
+        //fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
         
       }
     }
