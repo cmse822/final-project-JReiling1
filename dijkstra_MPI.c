@@ -65,34 +65,7 @@ int** generateGraph() {
 
 int main(int argc, char *argv[]) 
 {
-    // Initialize MPI information
-    int rank, size;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-
-    if (size != 4) {
-          if (rank == 0)
-              printf("This code requires exactly 4 MPI processes.\n");
-          MPI_Finalize();
-          return 1;
-      }
-
-    // Divide the vertices equally among the processes
-    int start_vertex = rank * num_verticies / size;
-    int end_vertex = (rank + 1) * num_verticies / size;
-
-    /* Example graph found online */
-    // int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
-    //                   { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-    //                   { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
-    //                   { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
-    //                   { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-    //                   { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
-    //                   { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
-    //                   { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-    //                   { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
-
+    // Starting information before initializing MPI
     int** graph = generateGraph();
     // Initialize csv 
     const char *csv_file_name="dijkstra_MPI.csv";
@@ -124,6 +97,34 @@ int main(int argc, char *argv[])
     for (int vertex = 0; vertex < num_verticies; vertex++) {
       source_list[vertex] = vertex;
     }
+
+    // Initialize MPI information
+    int rank, size;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    if (size != 4) {
+          if (rank == 0)
+              printf("This code requires exactly 4 MPI processes.\n");
+          MPI_Finalize();
+          return 1;
+      }
+
+    // Divide the vertices equally among the processes
+    int start_vertex = rank * num_verticies / size;
+    int end_vertex = (rank + 1) * num_verticies / size;
+
+    /* Example graph found online */
+    // int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+    //                   { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+    //                   { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
+    //                   { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
+    //                   { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+    //                   { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
+    //                   { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
+    //                   { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+    //                   { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
 
     double total_start_time;
     MPI_Barrier(MPI_COMM_WORLD); // Ensure all processes start the timer at the same time
