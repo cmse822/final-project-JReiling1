@@ -7,17 +7,25 @@
 ####SBATCH --cpus-per-task=0      # the number of CPUs (or cores) per task (same as -c)
 #SBATCH --gpus=v100:1
 #SBATCH --mem=32G                  # total memory per node
-#SBATCH --job-name reiling_dijkstra_openmp     # you can give your job a name for easier identification (same as -J)
+#SBATCH --job-name reiling_dijkstra_serial     # you can give your job a name for easier identification (same as -J)
 #SBATCH --output=%x.out
 #SBATCH --error=%x.err
+
+# Mail type
+# e.g., which events trigger email notifications
+#SBATCH --mail-type=ALL
+
+# Mail address
+#SBATCH --mail-user=reiling1@msu.edu
+
 ########## Command Lines to Run ##########
 module purge
 module load powertools
 
 scontrol show job $SLURM_JOB_ID     ### write job information to output file
 
-gcc dijkstra_openMP -o dijkstra_openMP.c -fopenmp
+gcc dijkstra_serial.c -o dijkstra_serial
 
-./dijkstra_openMP
+./dijkstra_serial
 
 

@@ -41,8 +41,7 @@ void printSolution(FILE *outputFile, int dist[], int num_verticies, int source, 
         for (int i = 0; i < num_verticies; i++){ 
             printf("%d \t\t\t\t %d\n", i, dist[i]);
         }
-        fprintf(outputFile, "%d, %d, %f\n", num_verticies, source,  runtime);
-            
+        fprintf(outputFile, "%d, %f\n", num_verticies,  runtime);   
     }
 }
 
@@ -76,7 +75,7 @@ int main() {
     fseek(outputFile, 0, SEEK_END); // Move to the end of the file
     long fileSize = ftell(outputFile); // Get the current position (file size)
     if (fileSize == 0) { // Check if the file is empty
-        fprintf(outputFile, "Num Verticies, Source Node, Runtime\n");
+        fprintf(outputFile, "Num Verticies, Runtime\n");
     }
 
 

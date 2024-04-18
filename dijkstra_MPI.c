@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     fseek(outputFile, 0, SEEK_END); // Move to the end of the file
     long fileSize = ftell(outputFile); // Get the current position (file size)
     if (fileSize == 0) { // Check if the file is empty
-        fprintf(outputFile, "Source Node, Thread Num, Runtime\n");
+        fprintf(outputFile, "Num Verticies, Runtime\n");
     }
 
 
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
     if (rank == 0) {
       double total_end_time = MPI_Wtime();
       printf("Time for shortest path distance: %f seconds\n\n", total_end_time - total_start_time);
-      fprintf(outputFile, "%d, %d, %f\n", num_verticies, source,  total_end_time - total_start_time);
+      fprintf(outputFile, "%d, %f\n", num_verticies,  total_end_time - total_start_time);
     }
 
     MPI_Finalize();
