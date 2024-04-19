@@ -11,7 +11,7 @@
 // This version is using MPI. See other verions of Dijkstra for parallelized
 // verions in both serial and openMP
 
-#define num_verticies 9
+#define num_verticies 1000
 
 
 int minDistance(int dist[], bool sptSet[])
@@ -99,18 +99,18 @@ int main(int argc, char *argv[])
     }
 
     // // Starting information before initializing MPI
-    // int** graph = generateGraph();
+    int** graph = generateGraph();
 
     /* Example graph found online */
-     int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
-                       { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-                       { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
-                       { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
-                       { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-                       { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
-                       { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
-                       { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-                       { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
+    //  int graph[num_verticies][num_verticies] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+    //                    { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+    //                    { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
+    //                    { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
+    //                    { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+    //                    { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
+    //                    { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
+    //                    { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+    //                    { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
 
     // Check if the file is open
     if (outputFile == NULL) {
@@ -130,12 +130,12 @@ int main(int argc, char *argv[])
       source_list[vertex] = vertex;
     }
 
-    if (size != 4) {
-          if (rank == 0)
-              printf("This code requires exactly 4 MPI processes.\n");
-          MPI_Finalize();
-          return 1;
-      }
+    // if (size != 4) {
+    //       if (rank == 0)
+    //           printf("This code requires exactly 4 MPI processes.\n");
+    //       MPI_Finalize();
+    //       return 1;
+    //   }
 
     // Divide the vertices equally among the processes
     int start_vertex = rank * num_verticies / size;
@@ -185,14 +185,14 @@ int main(int argc, char *argv[])
 
         }
 
-      if (rank == 0) {
-        printf("Shortest Path for source node = %d on process %d\n", source, rank);
-        printSolution(shortest_dist);
-        double end_time;
-        get_walltime(&end_time);
-        //fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
+    //   if (rank == 0) {
+    //     printf("Shortest Path for source node = %d on process %d\n", source, rank);
+    //     printSolution(shortest_dist);
+    //     double end_time;
+    //     get_walltime(&end_time);
+    //     //fprintf(outputFile, "%d, %f\n", source,  end_time - start_time);
         
-      }
+    //   }
     }
 
     if (rank == 0) {

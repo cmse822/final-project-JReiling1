@@ -22,7 +22,7 @@ Below is the output for finding the shortest path in the graph when each node is
 
 ![serial graph output 2](./results/final_project_figures/serial_graph_output_2.png)
 
-To verify with the serial implementation, here is Jared's openMP implementation when the source node equals 0
+To verify with the serial implementation, here is Jared's openMP implementation with 2 threads when the source node equals 0
 
 ![openMP graph verification](./results/final_project_figures/openMP_graph_verification.png)
 
@@ -32,7 +32,7 @@ Below is the output for finding the shortest path in the graph when each node is
 
 ![openMP graph output 2](./results/final_project_figures/openMP_graph_output_2.png)
 
-To verify with the serial implementation, here is Jared's MPI implementation when the source node equals 0
+To verify with the serial implementation, here is Jared's MPI implementation with 4 ranks when the source node equals 0
 
 ![MPI graph verification](./results/final_project_figures/MPI_graph_verification.png)
 
