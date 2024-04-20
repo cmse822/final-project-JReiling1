@@ -1,13 +1,13 @@
 #!/bin/bash --login
 ########## SBATCH Lines for Resource Request ##########
 
-#SBATCH --time=2:00:00       # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --time=0:10:00       # limit of wall clock time - how long the job will run (same as -t)
 #SBATCH --nodes=1                     # the number of node requested.
-#SBATCH --ntasks=2                    # the number of task to run
-####SBATCH --cpus-per-task=0      # the number of CPUs (or cores) per task (same as -c)
+#SBATCH --ntasks=1                    # the number of task to run
+#SBATCH --cpus-per-task=4      # the number of CPUs (or cores) per task (same as -c)
 #SBATCH --gpus=v100:1
 #SBATCH --mem=32G                  # total memory per node
-#SBATCH --job-name reiling_dijkstra_serial     # you can give your job a name for easier identification (same as -J)
+#SBATCH --job-name reiling_dijkstra_openMP     # you can give your job a name for easier identification (same as -J)
 #SBATCH --output=%x.out
 #SBATCH --error=%x.err
 
@@ -22,10 +22,12 @@
 module purge
 module load powertools
 
+# Set the number of threads here
+export OMP_NUM_THREADS=1
+
 scontrol show job $SLURM_JOB_ID     ### write job information to output file
 
-gcc dijkstra_serial.c -o dijkstra_serial
+gcc dijkstra_openMP.c -o dijkstra_openMP.exe -fopenmp -std=c99
 
-./dijkstra_serial
-
+./dijkstra_openMP.exe
 

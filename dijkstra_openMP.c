@@ -11,8 +11,8 @@
 // This version is openMP implimentation. See other verions of Dijkstra for parallelized
 // verions in both MPI and openMP
 
-#define num_verticies 1000
-#define NUM_THREADS 64
+#define num_verticies 10
+//#define OMP_NUM_THREADS
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -46,13 +46,18 @@ void printSolution(FILE *outputFile, int dist[], int source, double run_time)
     }
 }
 
+// void write_to_csv(FILE *outputFile, double run_time)
+// {
+//     #pragma omp critical
+//     {
+//         fprintf(outputFile, "%d, %d, %f\n", num_verticies, omp_get_num_threads(), run_time);
+            
+//     }
+// }
+
 void write_to_csv(FILE *outputFile, double run_time)
 {
-    #pragma omp critical
-    {
-        fprintf(outputFile, "%d, %d, %f\n", num_verticies, NUM_THREADS, run_time);
-            
-    }
+    fprintf(outputFile, "%d, %d, %f\n", num_verticies, omp_get_num_threads(), run_time);
 }
 
 int** generateGraph() {
@@ -133,9 +138,9 @@ int main() {
    }
 
     omp_set_nested(0); // Disable nested parallelism
-    //omp_set_num_threads(NUM_THREADS);
+    //omp_set_num_threads(OMP_NUM_THREADS);
     double start_time = omp_get_wtime();
-    //
+    
     #pragma omp parallel private(shortest_dist, short_path_tree)
     {
         #pragma omp for
