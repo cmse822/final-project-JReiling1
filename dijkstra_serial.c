@@ -19,9 +19,10 @@ int minDistance(int shortest_dist[], bool short_path_tree[])
     int min = INT_MAX, min_index;
  
     for (int vertex = 0; vertex < num_verticies; vertex++)
-        if (short_path_tree[vertex] == false && shortest_dist[vertex] <= min)
+        if (short_path_tree[vertex] == false && shortest_dist[vertex] <= min) {
             min = shortest_dist[vertex];
             min_index = vertex;
+        }
  
     return min_index;
 }

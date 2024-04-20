@@ -17,9 +17,9 @@ Dijkstra's algorithm calculates the shortest path between nodes in a weighted gr
 
 The algorithm works by first initializing an array storing the shortest path tree and a second array storing the shortest distance from the source ndoe to all other nodes [3]. These initialized arrays are first empty. In this implementation, a for loop iterates through the number of verticies and assigns an index as the current source. Then, all the verticies, excluding the source, have all their distances be infinite. The source node is assigned zero for its shortest distance so the algorithm will choose the source first [3]. <br>
 
-While the shortest path tree array does not include all the verticies, an adjacent vertex is choosen that is not in the shortest path three array and the adjacent vertex has the minimum distance to the source node. The adjacent vertex is then appended to the shortest path tree array and updates the neighboring verticies to the adjacent vertex. This updating is done by interating through all the neighboring verticies to the adjacent vertex and calculates the distance from the adjacent vertex to the neighboring verticies and saves the shortest distance value [3]. 
+While the shortest path tree array does not include all the verticies, an adjacent vertex is choosen that is not in the shortest path three array and the adjacent vertex has the minimum distance to the source node. The adjacent vertex is then appended to the shortest path tree array and updates the neighboring verticies to the adjacent vertex. This updating is done by interating through all the neighboring verticies to the adjacent vertex and calculates the distance from the adjacent vertex to the neighboring verticies and saves the shortest distance value [3]. The time complexity of this algorithm, in serial, is O(V^2) where V is the number of nodes [2].
 
-In this paper, we discuss the implementation of Dijkstra's algorithm in serial and in parallel. For the parallel implementaitons, we used openMP and MPI and compared the results. These programs were first compared with a graph where we know definitvly the shortest path (see verification). We then executed our programs with randomized graphs of various sizes and with varying number of threads and ranks. The main goal of this project is to compare the runtimes of caluclating Dijkstra's algorithm with parallel implementations of openMP and MPI.
+In this paper, we discuss the implementation of Dijkstra's algorithm in serial and in parallel. For the parallel implementaitons, we used openMP and MPI and compared the results. These programs were first compared with a graph where we know definitvly the shortest path (see verification). We then executed our programs with randomized graphs of various sizes and with varying number of threads and ranks. The main goal of this project is to compare the runtimes of caluclating Dijkstra's algorithm with parallel implementations of openMP and MPI. 
 
 ## Methods
 
@@ -43,28 +43,23 @@ In this serial application , the following functions are used:
 - int main(): The main function intializes the graph, intialized the output file for storing all the runtime information and calculates Dijkstra's algorithm. After calculating the shortest path for every node in the graph as the source node, the main function then writes the number of verticies and runtime information to a csv file and saves the information. <br><br>
 For more information, please see the code in dijstra_serial.c <br>
 
-In the MPI implementation, many of the supplementary functions is similar to the serial implementation above. We use MPI to distribute the workload by domain decomposition. First, we initialize MPI in the main function in create the output file. We then broadcast that the output file was createds so every process knows not to rewrite the header. Then, we initialize the graph (either the hard-coded version for verification or the randomized graph). Before starting Dijkstra's algorithm, an MPI_Barrier is used to initialize the total_start_time which syncs the start time with all the processes. We use MPI to divide the verticies equally among all the processies. For each rank, we calculate the starting vertex (int start_vertex = rank * num_verticies / size) and the ending vertex (int end_vertex = (rank + 1) * num_verticies / size). IN this implementation, every rank will have independent calculations of the shortest path algorithm. Instead of iterating through the entire list of verticies, the MPI inplementation uses the loop (for (int source_index = start_vertex; source_index < end_vertex; source_index++)) for Dijkstra's algorithm calculations. Finally, if the rank is zero, then the total_end_time is recorded and saved to the output file. 
+In the MPI implementation, many of the supplementary functions is similar to the serial implementation above. We use MPI to distribute the workload by domain decomposition. First, we initialize MPI in the main function in create the output file. We then broadcast that the output file was createds so every process knows not to rewrite the header. Then, we initialize the graph (either the hard-coded version for verification or the randomized graph). Before starting Dijkstra's algorithm, an MPI_Barrier is used to initialize the total_start_time which syncs the start time with all the processes. We use MPI to divide the verticies equally among all the processies. For each rank, we calculate the starting vertex (int start_vertex = rank * num_verticies / size) and the ending vertex (int end_vertex = (rank + 1) * num_verticies / size). IN this implementation, every rank will have independent calculations of the shortest path algorithm. Instead of iterating through the entire list of verticies, the MPI inplementation uses the loop (for (int source_index = start_vertex; source_index < end_vertex; source_index++)) for Dijkstra's algorithm calculations. Finally, if the rank is zero, then the total_end_time is recorded and saved to the output file. <br>
 
 In the openMP implementation, there are many similarities between the serial and MPI versions with key differences. In the supplementary function "printSolution", a #pragma omp critical is used for IO implementation. For print statements to be properly aligned, the omp critical statement is necessary for proper recording of the runtime as the number of threads and verticies is changing. Before iterating through each vertex, nested parallelism is disabled. This is due to the race conditions that may occur when updating the shortest distance array and shortest path tree array. Like the MPI implementation, the openMP version is doing domain decomposition and allocating threads to specific sections of the graph to calculate the shortest distance. That way, the work is distributed between all of the threads evenly and gives the program speedup.
 
-## Results
-
-## Conclusions
-
-
 ## Verification
-
-For verification, the parallel and serial programs developed in this project were validated by comparing their results to the results of other serial implementations of Dijkstra's algorithm using a common graph. Below is an example graph used to validate the developed parallel algorithms.  
+Before we starting scaling the number of nodes in the graph, we wanted to verify that the ouput produced by Dijkstra's algorithm using openMP and MPI were producing the correct result. 
+For verification, the parallel and serial programs developed in this project were validated by comparing their results to the results of other serial implementations of Dijkstra's algorithm using a common graph [3]. Below is an example graph used to validate the developed parallel algorithms.  
 
 Common Graph for Validation
 
 ![Common Graph for Validation](./results/verification_figures/graph_image.png)
 
-Below is the result of finding the shortest path in the graph above from GeeksforGeeks
+Below is the result of finding the shortest path in the graph above from [3]
 
 ![verification image](./results/verification_figures/verification_image.png)
 
-Below is the result of finding the shortest path in the graph above in Jared's serial implementation
+Below is the result of finding the shortest path in the graph above in our serial implementation
 
 ![serial graph verification](./results/verification_figures/serial_graph_verification.png)
 
@@ -92,6 +87,46 @@ Below is the output for finding the shortest path in the graph when each node is
 this version is only printing the output when the process number equals 0.
 
 ![MPI graph verification](./results/verification_figures/MPI_graph_output_1(process%200).png)
+
+As shown here, the parallel implementations of openMP and MPI using varying thread counts and ranks produce the same result. Therefore, we can scale the size of the graph without needing to verify the correct shortest path tree since it was verified in this simple example. 
+
+## Results
+
+We first calculate the total run time for the serial implementation of Dijkstra's algorithm and plot against the number of verticies of the graph. We determined that the run time scales exponentially with the number of verticies in the graph. Notice this imlementation is exactly what we expected since the time complexity of this algorithm is O(V^2) where V is the number of nodes in the graph [2].
+
+![Serial implemntation of Dijkstra's alg](./results/Serial/NumThreadsVsRuntime.png)
+
+Second, we implemented OpenMP as described in the methods section. This implementent involves discritizing the domain of nodes to be proces such that each thread has a balanced load. As expeced, the overall run time descreases as the number of threads increases. The speedup is most demonstrated when the graph has 100 nodes and 1000 nodes. For the graph implementation of 10 nodes, the overall run time increases since it takes the HPCC more time to instantiate and run the program threaded when compared to only running this program on one thread
+
+![N = 10 OpenMP](./results/OpenMP/NumThreadsVsRuntimeN=10.png)
+
+![N = 100 OpenMP](./results/OpenMP/NumThreadsVsRuntimeN=100.png)
+
+![N = 1000 OpenMP](./results/OpenMP/NumThreadsVsRuntimeN=1000.png)
+
+The explaination for the outliers on these plots can be due to jitter on the HPCC. Since each thread is "fighting" for resources, there will be runs where other jobs running will cause the latency time to increase. 
+
+Thirdly, we implemented MPI as described in the methods section. This implementation also involved discritizing the domain of nodes where the threads are balancing the computational load. As expected, as the number of threads increase, the overall runtime decreases This is due to each thread having the same load and processing the same amount of information compared to other MPI threads. 
+
+![N = 10 MPI](./results/MPI/NumThreadsVsRuntimeN=10.png)
+
+![N = 100 MPI](./results/MPI/NumThreadsVsRuntimeN=100.png)
+
+![N = 1000 MPI](./results/MPI/NumThreadsVsRuntimeN=1000.png)
+
+Additionally notice that for both MPI and OpenMP when the number verticies equals 100 and 1000, the run time decreases exponentially. Since the time complexity of the serial version is O(V^2), as we add more threads in powers of 2, the overall runtime will then decrease.
+
+## Conclusions
+
+The overall goal of this project was to implement and understand how Dijkstra's algorithm performed in serial and in parallel. In our exploration, we implemented parallelism, OpenMP and MPI, and compared their results to each other and the serial implementation. First, we used existing literature to construct a serial implementation, verified the correct shortest path calculation, and then parallized the algorithm. To verify that the parallelization was producing the correct result, we changed the number of ranks and nodes in the OpenMP and MPI implementation to determine if the algorithms were working correctly in parallel. After verification, we then used a random graph generator that generate a random graph with a given number of nodes and a seed to maintain random consistency across trials. We observed that as the number of nodes increased and the number of threads increased, the overall run time decreased. However, for a graph of size 10, the number of threads/ranks caused the algorithm to run longer. Therefore, we conclude that for graphs with 100 and 1000 nodes, MPI and OpenMP parallization decreases the runtime exponentially as obsurved in the results above. Both parallization methods are comperable to each other in terms of performance and provide a significant speedup as the number of threads and ranks increase. <br>
+
+In conclusion, we want to explain that we demonstrated the requirements of this project:
+- Two different parallel programming models: For this section, we implemented MPI (distributed memory) and OpenMP (shared memory). We implemented these parallelization strategies sepertely so we could determine their efficacy to each other and to the serial implementation of Dijkstra's algorithm. <br>
+- Parallelization Strategies: we adopted two different parallization strageies (distributed and shared memory). In both adaptaions, we used domain decomposition to determine the workload for each thread; however, the impelmenetation of OpenMP and MPI were different. OpenMP created a parallel environment in which all the threads had access to the same graph yet the sortest path tree and shortest distance arrays were kept private in each thread to prevent race conditions and overwriting of calculations from another thread. MPI also created a parallel region in which each thread was assigned a segment of the graph to traverse and each thread had a seperate copy of the shortest path tree and the shortest distance array. Since distributed memory is default for MPI, this parallization strategy works well for this application since shared memory can cause overwritting to both arrays. 
+- Verification test: Before using a randomly generated graph, we compared the performance of the serial, OpenMP, and MPI implementations of Dijkstra's algorithm to a common graph used in each instance. By changing the number of ranks/threads for openMP and MPI, we were able to determine that the shortest path calculation was correct when using different number of threads. 
+- Load balancing: In both parallel instances, OpenMP and MPI, the work for each thread is evenly distributed. Previously, the workload for the OpenMP implementation was not balanced which caused no speedup as the number of threads increased. Therefore, the load of each thread was almost identical to produce the optimal runtime.
+- Memory usage: For the MPI implementation, each graph was stored as a copy in each thread which does increase the amount of memory needed to run this calculation. However, the distributed memory did affect the overall performance. When compared to the OpenMP implementation, openMP performed with larger node graphs because all the threads in openMP were accessing the same graph which prevented the need for duplication across each thread. For smaller graph sizes, such as 10 or 100 nodes, the graph duplication time across all nodes does not significantly affect the runtime when comparing OpenMP and MPI.
+- Scaling Studies: In this project, we increased the number of nodes in a randomly generated graph and measured the runtime in applications using serial, OpenMP, and MPI parallelism. As we increased the number of nodes in the graph, we increased the number of threads used in the calculations to dermine the speedup.
 
 ## References
 1. Mengsen Zhang, Samir Chowdhury, Manish Saggar; Temporal Mapper: Transition networks in simulated and real neural dynamics. Network Neuroscience 2023; 7 (2): 431–460. doi: https://doi.org/10.1162/netn_a_00301
