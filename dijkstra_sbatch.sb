@@ -15,12 +15,13 @@
 module purge
 module load powertools
 
-# Set the number of threads here
-# export OMP_NUM_THREADS=2
-
 scontrol show job $SLURM_JOB_ID     ### write job information to output file
 
 gcc dijkstra_openMP.c -o dijkstra_openMP.exe -fopenmp -std=c99
 
+./dijkstra_openMP.exe
+./dijkstra_openMP.exe 
+./dijkstra_openMP.exe 
+./dijkstra_openMP.exe 
 ./dijkstra_openMP.exe 
 

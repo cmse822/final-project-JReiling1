@@ -9,10 +9,10 @@
 // Final Project
 // Parallelization of Dijkstra Algorithm: finding the shortest path between verticies on a graph
 // This version is openMP implimentation. See other verions of Dijkstra for parallelized
-// verions in both MPI and openMP
+// verions in both MPI and serial.
 
-#define num_verticies 10
-#define OMP_NUM_THREADS 1
+#define num_verticies 2000
+#define OMP_NUM_THREADS 64
 
 
 // Notice that we're instantiating omp to avoid race conditions
