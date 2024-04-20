@@ -128,8 +128,14 @@ In conclusion, we want to explain that we demonstrated the requirements of this 
 - Memory usage: For the MPI implementation, each graph was stored as a copy in each thread which does increase the amount of memory needed to run this calculation. However, the distributed memory did affect the overall performance. When compared to the OpenMP implementation, openMP performed with larger node graphs because all the threads in openMP were accessing the same graph which prevented the need for duplication across each thread. For smaller graph sizes, such as 10 or 100 nodes, the graph duplication time across all nodes does not significantly affect the runtime when comparing OpenMP and MPI.
 - Scaling Studies: In this project, we increased the number of nodes in a randomly generated graph and measured the runtime in applications using serial, OpenMP, and MPI parallelism. As we increased the number of nodes in the graph, we increased the number of threads used in the calculations to dermine the speedup.
 
+## Future Directions
+
+As a future project, we would like to implement this parallelization method in real-world data. Since there are many neuroscience applications with measuring brain states and network analysis, getting a graph from real-world sources could hellp us find functional connectivity between different areas of the human or animal brain. We are also interested in understanding how different densities of graphs would effect the performance of our algorithms. A deneser network with less nodes could perform faster than a network with more nodes but with less connections between nodes. <br>
+
+Another future direction is parallelizing other shortest path algorithms to determine which algorithms perform better in various parallelizations and with varying number of nodes and density. In this project, we mainly focused on Dijkstra's algorthm but many shortest path algorithms exist that may be parallelized. We leave these project suggestions as possible project topics for the next cohort of students taking CMSE 822: Parallel Computing at Michigan State University.
+
 ## References
 1. Mengsen Zhang, Samir Chowdhury, Manish Saggar; Temporal Mapper: Transition networks in simulated and real neural dynamics. Network Neuroscience 2023; 7 (2): 431–460. doi: https://doi.org/10.1162/netn_a_00301
 2. "Dijkstra's algorithm." wikipedia. Wikimedia Foundation, 20 April 2024,
 https://en.wikipedia.org/wiki/Dijkstra's_algorithm
-3. https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
+3. "How to find Shortest Paths from Source to all Vertices using Dijkstra’s Algorithm." geeksforgeeks, 20 April 2024, https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
