@@ -106,7 +106,7 @@ int main() {
     int** graph = generateGraph();
 
     // Initialize csv 
-    const char *csv_file_name="dijkstra_openMP_TESTING.csv";
+    const char *csv_file_name="dijkstra_openMP.csv";
 
     FILE *outputFile = fopen(csv_file_name, "a");
 
@@ -162,7 +162,6 @@ int main() {
                 short_path_tree[i] = false;
             }
 
-            //#pragma omp critical
             for (int vert_indx = 0; vert_indx < num_verticies - 1; vert_indx++) {
                 int current_vert = minDistance(shortest_dist, short_path_tree);
                 short_path_tree[current_vert] = true;

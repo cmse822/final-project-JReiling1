@@ -67,7 +67,6 @@ def main():
     create_plot(df_10, 10, open_mp)
     create_plot(df_100, 100, open_mp)
     create_plot(df_1000, 1000, open_mp)
-    create_plot(df_2000, 2000, open_mp)
 
     # Read csv and create plot for MPI
     dijkstra_MPI_csv = 'dijkstra_MPI.csv'
