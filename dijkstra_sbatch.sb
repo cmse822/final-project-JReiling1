@@ -17,11 +17,11 @@ module load powertools
 
 scontrol show job $SLURM_JOB_ID     ### write job information to output file
 
-gcc dijkstra_openMP.c -o dijkstra_openMP.exe -fopenmp -std=c99
+gcc dijkstra_openMP_TESTING.c -o dijkstra_openMP_TESTING.exe -fopenmp -std=c99
 
-./dijkstra_openMP.exe
-./dijkstra_openMP.exe 
-./dijkstra_openMP.exe 
-./dijkstra_openMP.exe 
-./dijkstra_openMP.exe 
+./dijkstra_openMP_TESTING.exe
+./dijkstra_openMP_TESTING.exe 
+./dijkstra_openMP_TESTING.exe 
+./dijkstra_openMP_TESTING.exe 
+./dijkstra_openMP_TESTING.exe 
 

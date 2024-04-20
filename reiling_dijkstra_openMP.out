@@ -1,17 +1,17 @@
-JobId=34367657 JobName=reiling_dijkstra_openMP
+JobId=34391103 JobName=reiling_dijkstra_openMP
    UserId=reiling1(6185837) GroupId=CMSE822_SS24_S001(2887) MCS_label=N/A
-   Priority=55823 Nice=0 Account=general QOS=reiling1
+   Priority=56891 Nice=0 Account=general QOS=reiling1
    JobState=RUNNING Reason=None Dependency=(null)
    Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
-   RunTime=00:00:17 TimeLimit=00:10:00 TimeMin=N/A
-   SubmitTime=2024-04-19T21:22:37 EligibleTime=2024-04-19T21:22:37
-   AccrueTime=2024-04-19T21:22:37
-   StartTime=2024-04-19T21:22:41 EndTime=2024-04-19T21:32:41 Deadline=N/A
-   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-04-19T21:22:41 Scheduler=Main
-   Partition=general-short AllocNode:Sid=dev-amd20-v100:181611
+   RunTime=00:00:05 TimeLimit=00:10:00 TimeMin=N/A
+   SubmitTime=2024-04-20T13:34:05 EligibleTime=2024-04-20T13:34:05
+   AccrueTime=2024-04-20T13:34:05
+   StartTime=2024-04-20T13:34:08 EndTime=2024-04-20T13:44:08 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-04-20T13:34:08 Scheduler=Main
+   Partition=general-short AllocNode:Sid=dev-amd20-v100:13570
    ReqNodeList=(null) ExcNodeList=(null)
-   NodeList=nvl-004
-   BatchHost=nvl-004
+   NodeList=nvl-002
+   BatchHost=nvl-002
    NumNodes=1 NumCPUs=8 NumTasks=2 CPUs/Task=4 ReqB:S:C:T=0:0:*:*
    ReqTRES=cpu=8,mem=32G,node=1,billing=4980,gres/gpu=1
    AllocTRES=cpu=8,mem=32G,node=1,billing=4980,gres/gpu=1
