@@ -1,20 +1,20 @@
-JobId=34366512 JobName=reiling_dijkstra_openMP
+JobId=34367176 JobName=reiling_dijkstra_openMP
    UserId=reiling1(6185837) GroupId=CMSE822_SS24_S001(2887) MCS_label=N/A
-   Priority=56052 Nice=0 Account=general QOS=reiling1
+   Priority=56245 Nice=0 Account=general QOS=reiling1
    JobState=RUNNING Reason=None Dependency=(null)
    Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
-   RunTime=00:00:10 TimeLimit=00:10:00 TimeMin=N/A
-   SubmitTime=2024-04-19T20:24:57 EligibleTime=2024-04-19T20:24:57
-   AccrueTime=2024-04-19T20:24:57
-   StartTime=2024-04-19T20:25:01 EndTime=2024-04-19T20:35:01 Deadline=N/A
-   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-04-19T20:25:01 Scheduler=Main
+   RunTime=00:00:03 TimeLimit=00:10:00 TimeMin=N/A
+   SubmitTime=2024-04-19T20:54:46 EligibleTime=2024-04-19T20:54:46
+   AccrueTime=2024-04-19T20:54:46
+   StartTime=2024-04-19T20:55:09 EndTime=2024-04-19T21:05:09 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-04-19T20:55:09 Scheduler=Main
    Partition=general-short AllocNode:Sid=dev-amd20-v100:181611
    ReqNodeList=(null) ExcNodeList=(null)
-   NodeList=nvl-002
-   BatchHost=nvl-002
-   NumNodes=1 NumCPUs=4 NumTasks=1 CPUs/Task=4 ReqB:S:C:T=0:0:*:*
-   ReqTRES=cpu=4,mem=32G,node=1,billing=4980,gres/gpu=1
-   AllocTRES=cpu=4,mem=32G,node=1,billing=4980,gres/gpu=1
+   NodeList=nvl-003
+   BatchHost=nvl-003
+   NumNodes=1 NumCPUs=8 NumTasks=2 CPUs/Task=4 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=8,mem=32G,node=1,billing=4980,gres/gpu=1
+   AllocTRES=cpu=8,mem=32G,node=1,billing=4980,gres/gpu=1
    Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
    MinCPUsNode=4 MinMemoryNode=32G MinTmpDiskNode=0
    Features=[intel14|intel16|intel18|(amr|acm)|nvf|nal|nif] DelayBoot=00:00:00
@@ -27,6 +27,5 @@ JobId=34366512 JobName=reiling_dijkstra_openMP
    StdOut=/mnt/ufs18/home-261/reiling1/final-project-JReiling1/reiling_dijkstra_openMP.out
    Power=
    TresPerJob=gres:gpu:v100:1
-   MailUser=reiling1@msu.edu MailType=INVALID_DEPEND,BEGIN,END,FAIL,REQUEUE,STAGE_OUT
    
 

@@ -12,7 +12,7 @@
 // verions in both MPI and openMP
 
 #define num_verticies 10
-//#define OMP_NUM_THREADS
+#define OMP_NUM_THREADS 1
 
 
 // Notice that we're instantiating omp to avoid race conditions
@@ -55,9 +55,9 @@ void printSolution(FILE *outputFile, int dist[], int source, double run_time)
 //     }
 // }
 
-void write_to_csv(FILE *outputFile, double run_time)
+void write_to_csv(FILE *outputFile, int num_threads, double run_time)
 {
-    fprintf(outputFile, "%d, %d, %f\n", num_verticies, omp_get_num_threads(), run_time);
+    fprintf(outputFile, "%d, %d, %f\n", num_verticies, num_threads, run_time);
 }
 
 int** generateGraph() {
@@ -123,7 +123,7 @@ int main() {
     fseek(outputFile, 0, SEEK_END); // Move to the end of the file
     long fileSize = ftell(outputFile); // Get the current position (file size)
     if (fileSize == 0) { // Check if the file is empty
-        fprintf(outputFile, "Num Verticies, Num Ranks, Runtime\n");
+        fprintf(outputFile, "Num Verticies, Num Threads, Runtime\n");
     }
 
 
@@ -138,9 +138,11 @@ int main() {
    }
 
     omp_set_nested(0); // Disable nested parallelism
-    //omp_set_num_threads(OMP_NUM_THREADS);
+    omp_set_num_threads(OMP_NUM_THREADS);
+    int num_threads; 
+
     double start_time = omp_get_wtime();
-    
+
     #pragma omp parallel private(shortest_dist, short_path_tree)
     {
         #pragma omp for
@@ -174,11 +176,12 @@ int main() {
             // // Print resulting information
             // printSolution(outputFile, shortest_dist, source);
         }
+        num_threads = omp_get_num_threads();
     }
     double end_time = omp_get_wtime();
     double run_time = end_time - start_time;
     // Print resulting information
-    write_to_csv(outputFile, run_time);
+    write_to_csv(outputFile, num_threads, run_time);
 
 
     fclose(outputFile);
