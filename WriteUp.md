@@ -93,7 +93,7 @@ As shown here, the parallel implementations of OpenMP and MPI using varying thre
 
 ## Results
 
-We first calculate the total run time for the serial implementation of Dijkstra's algorithm and plot against the number of vertices of the graph. We determined that the run time scales exponentially with the number of vertices in the graph. Notice this implementation is exactly what we expected since the time complexity of this algorithm is O(V^2) where V is the number of nodes in the graph [2].
+We first calculate the total run time for the serial implementation of Dijkstra's algorithm and plot against the number of vertices of the graph. We determined that the run time scales exponentially with the number of vertices in the graph. Notice this implementation is exactly what we expected since the time complexity of this algorithm is O(V^2) where V is the number of nodes in the graph [2]. 
 
 ![Serial implementation of Dijkstra's alg](./results/Serial/NumThreadsVsRuntime.png)
 
