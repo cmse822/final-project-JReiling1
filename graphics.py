@@ -34,24 +34,28 @@ def create_df(csv_link):
 
 def create_plot(df, N, parallel_name):
     # Create a plot for df_20
+    log_x = np.log10(df[' Num Threads'])
+    log_y = np.log10(df[' Runtime'])
     plt.figure(figsize = (10,5))
-    plt.scatter(df[' Num Threads'], df[' Runtime'], label='Number of threads vs runtime', linestyle='-', linewidth=1, color='blue')
-    plt.xlabel('Number of Threads')
-    plt.ylabel('Runtime (seconds)')
-    plt.title(f"{parallel_name} Num Threads vs Runtime for N= {N}")
+    plt.scatter(2 ** log_x, 2 ** log_y, marker='o') 
+    plt.xlabel('Log Number of Threads', fontsize=16)
+    plt.ylabel('Log Runtime (seconds)', fontsize=16)
+    plt.title(f"{parallel_name} Num Threads vs Runtime for N= {N}",fontsize=20)
     plt.savefig(f"results/{parallel_name}/NumThreadsVsRuntimeN={N}.png")
-    plt.legend(loc='upper right',)
+    plt.legend(loc='upper right')
     plt.ylim(min(df[' Runtime']), max(df[' Runtime']))
     plt.grid(True)
     plt.show()
 
 def create_serial_plot(df, parallel_name):
     # Create a plot for df_20
+    log_x = np.log10(df['Num Verticies'])
+    log_y = np.log10(df[' Runtime'])
     plt.figure(figsize = (10,5))
-    plt.scatter(df['Num Verticies'], df[' Runtime'], label='Number of graph vs runtime', linestyle='-', linewidth=1, color='blue')
-    plt.xlabel('Num Verticies')
-    plt.ylabel('Runtime (seconds)')
-    plt.title(f"{parallel_name} Num Verticies vs Runtime")
+    plt.scatter(2 ** log_x, 2 ** log_y, marker='o') 
+    plt.xlabel('Log Num Verticies', fontsize=16)
+    plt.ylabel('Log Runtime (seconds)', fontsize=16)
+    plt.title(f"{parallel_name} Num Verticies vs Runtime", fontsize=20)
     plt.savefig(f"results/{parallel_name}/NumThreadsVsRuntime.png")
     plt.legend(loc='upper right',)
     plt.ylim(min(df[' Runtime']), max(df[' Runtime']))
