@@ -105,6 +105,7 @@ Second, we implemented OpenMP as described in the methods section. This implemen
 
 ![N = 1000 OpenMP](./results/OpenMP/NumThreadsVsRuntimeN=1000.png)
 
+
 The explanation for the outliers on these plots can be due to jitter on the HPCC. Since each thread is "fighting" for resources, there will be runs where other jobs running will cause the latency to increase. 
 
 Thirdly, we implemented MPI as described in the methods section. This implementation also involved discretizing the domain of nodes where the threads are balancing the computational load. As expected, as the number of threads increase, the overall runtime decreases This is due to each thread having the same load and processing the same amount of information compared to other MPI threads. 
